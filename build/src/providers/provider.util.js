@@ -11,9 +11,9 @@ var imagePath = {
     "OPNXP004": "https://ox-prod.imgix.net/uploads/2016/11/clientLogo_OpenX.png?auto=compress",
 };
 var providerNames = {
-    "AMZP002": "AMAZON.MNET_TEST_PROVIDER_CREATIVE",
-    "APPNXP003": "APPNEXUS.MNET_TEST_PROVIDER_CREATIVE",
-    "OPNXP004": "OPENX.MNET_TEST_PROVIDER_CREATIVE"
+    "AMZP002": "AMAZON_CREATIVE",
+    "APPNXP003": "APPNEXUS_CREATIVE",
+    "OPNXP004": "OPENX_CREATIVE"
 };
 function getResponse(reqBody) {
     var sizes = reqBody.sizes.split(":"); // if multiple sizes
