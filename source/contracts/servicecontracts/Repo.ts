@@ -13,7 +13,7 @@ import { isBuffer } from 'util';
 
 export class PlacementProviderConfigRepo<K,V> implements Repository<K,V>{                   // providerconfig
 
-    public placementList;
+    private placementList;
 
     constructor(){
         this.placementList = new Array<V>();
