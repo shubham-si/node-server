@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 
 import indexRouter from './routes/index.routes'                     // alias for indexRouter object in index.routes.ts
 import providerRouter from './routes/provider.routes'
+import LogManager from './services/LogManager';
+
 
 export default class AppServer {
     public express: Application;

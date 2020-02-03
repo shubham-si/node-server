@@ -19,7 +19,11 @@ export function getResponse(reqBody:ResponseFormat){
         sizeMapProviderConfig[size]=
             {
                 "bidPrice":getRandomInt(15),
-                "adcode":getAdcode(size,reqBody.providerID)
+                "adcode":getAdcode(size,reqBody.providerID),
+                "providerid":reqBody.providerID,
+                "ecc":reqBody.ecc,
+                "epc":reqBody.epc,
+                "size":size
             };
     })
 
@@ -28,7 +32,7 @@ export function getResponse(reqBody:ResponseFormat){
     Object.keys(sizeMapProviderConfig).forEach((size,index)=>{
         response[reqBody.epc].push({[size]:sizeMapProviderConfig[size]});
     });
-    
+
     return response;
 }
 

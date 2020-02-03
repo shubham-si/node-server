@@ -5,6 +5,8 @@ import { json } from 'body-parser';
 import {PlacementProviderConfig} from '../../source/config/Type';
 import {Ajax,Deferred} from '../services/Ajax';
 
+import Logger from '../services/LogManager';
+
 var defferedRequests =[];
 
 console.log(defferedRequests.length);
@@ -18,6 +20,9 @@ async makeRequestToProviders(requestBody:any):Promise<any>{
 
     let defer = new Deferred();
 
+    //console.log("placement repo");
+    //console.log(JSON.stringify(PlacementRepo));
+
     Promise.all(defferedRequests.map((reqParam,i)=>{
         return new Promise((resolve,reject)=>{
             try{
@@ -30,7 +35,7 @@ async makeRequestToProviders(requestBody:any):Promise<any>{
             }
         })
     })).then((responses)=>{
-        defer.resolve(responses);
+        defer.resolve(responses);                   // {adslot:size:[{bidprice,adcode}]}
     });
 
     return defer.promise;
@@ -49,7 +54,7 @@ var placementCallback = function(placement:Placement,index:number){
 function makeBidRequest(placement:Placement, providerConfig: PlacementProviderConfig){
     
     let urlProvider="http://localhost:3000/provider/"
-    if(providerConfig.id.startsWith("AMZ")){
+    if(providerConfig.id.startsWith("AMZP")){
         urlProvider+="amazon"
     }else if(providerConfig.id.startsWith("APPNXP")){
         urlProvider+="appnexus"
@@ -58,6 +63,8 @@ function makeBidRequest(placement:Placement, providerConfig: PlacementProviderCo
     }
 
     let requestParams= getRequestData(placement,providerConfig,urlProvider,"POST");
+
+    Logger.log(requestParams.data,1);
 
     defferedRequests.push(requestParams);
 

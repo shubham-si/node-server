@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var ConfigBuilder_1 = __importDefault(require("../../source/config/ConfigBuilder"));
 var Ajax_1 = require("../services/Ajax");
+var LogManager_1 = __importDefault(require("../services/LogManager"));
 var defferedRequests = [];
 console.log(defferedRequests.length);
 var AdaptarManager = /** @class */ (function () {
@@ -53,6 +54,8 @@ var AdaptarManager = /** @class */ (function () {
                 defferedRequests = [];
                 ConfigBuilder_1.default.each(placementCallback);
                 defer = new Ajax_1.Deferred();
+                //console.log("placement repo");
+                //console.log(JSON.stringify(PlacementRepo));
                 Promise.all(defferedRequests.map(function (reqParam, i) {
                     return new Promise(function (resolve, reject) {
                         try {
@@ -66,7 +69,7 @@ var AdaptarManager = /** @class */ (function () {
                         }
                     });
                 })).then(function (responses) {
-                    defer.resolve(responses);
+                    defer.resolve(responses); // {adslot:size:[{bidprice,adcode}]}
                 });
                 return [2 /*return*/, defer.promise];
             });
@@ -82,7 +85,7 @@ var placementCallback = function (placement, index) {
 };
 function makeBidRequest(placement, providerConfig) {
     var urlProvider = "http://localhost:3000/provider/";
-    if (providerConfig.id.startsWith("AMZ")) {
+    if (providerConfig.id.startsWith("AMZP")) {
         urlProvider += "amazon";
     }
     else if (providerConfig.id.startsWith("APPNXP")) {
@@ -92,6 +95,7 @@ function makeBidRequest(placement, providerConfig) {
         urlProvider += "openx";
     }
     var requestParams = getRequestData(placement, providerConfig, urlProvider, "POST");
+    LogManager_1.default.log(requestParams.data, 1);
     defferedRequests.push(requestParams);
 }
 function getRequestData(placement, providerConfig, urlProvider, method) {
