@@ -1,4 +1,4 @@
-import { Ajax } from "./Ajax";
+import { Ajax } from '../services/Ajax';
 
 class LogManager{
 

@@ -1,5 +1,4 @@
 import { PlacementsInfoMap } from "../Type";
-import { scryptSync } from "crypto";
 
 export class Placement {
 

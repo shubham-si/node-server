@@ -39,76 +39,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ConfigBuilder_1 = __importDefault(require("../../source/config/ConfigBuilder"));
-var Ajax_1 = require("../services/Ajax");
-var LogManager_1 = __importDefault(require("../services/LogManager"));
-var defferedRequests = [];
-console.log(defferedRequests.length);
-var AdaptarManager = /** @class */ (function () {
-    function AdaptarManager() {
+var express_1 = __importDefault(require("express"));
+var body_parser_1 = __importDefault(require("body-parser"));
+var index_routes_1 = __importDefault(require("./routes/index.routes")); // alias for indexRouter object in index.routes.ts
+var provider_routes_1 = __importDefault(require("./routes/provider.routes"));
+var AppServer = /** @class */ (function () {
+    function AppServer(port) {
+        this.port = port;
+        this.express = express_1.default();
+        this.settings();
+        this.middlewares();
+        this.routes();
     }
-    AdaptarManager.prototype.makeRequestToProviders = function (requestBody) {
+    AppServer.prototype.settings = function () {
+        this.express.set('port', 3000);
+    };
+    AppServer.prototype.middlewares = function () {
+        this.express.use(body_parser_1.default.json());
+        this.express.use(body_parser_1.default.urlencoded({ extended: true }));
+    };
+    AppServer.prototype.routes = function () {
+        this.express.all('/*', function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+        this.express.use(index_routes_1.default); // by default '/' as path
+        this.express.use('/provider', provider_routes_1.default);
+    };
+    AppServer.prototype.listen = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var defer;
             return __generator(this, function (_a) {
-                defferedRequests = [];
-                ConfigBuilder_1.default.each(placementCallback);
-                defer = new Ajax_1.Deferred();
-                //console.log("placement repo");
-                //console.log(JSON.stringify(PlacementRepo));
-                Promise.all(defferedRequests.map(function (reqParam, i) {
-                    return new Promise(function (resolve, reject) {
-                        try {
-                            new Ajax_1.Ajax(reqParam.url, reqParam.data, reqParam.method).callService()
-                                .then(function (response) {
-                                resolve(response);
-                            });
-                        }
-                        catch (err) {
-                            reject(err);
-                        }
-                    });
-                })).then(function (responses) {
-                    defer.resolve(responses); // {adslot:size:[{bidprice,adcode}]}
-                });
-                return [2 /*return*/, defer.promise];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.express.listen(+this.express.get('port'))];
+                    case 1:
+                        _a.sent();
+                        console.log('Server on port', this.express.get('port'));
+                        return [2 /*return*/];
+                }
             });
         });
     };
-    return AdaptarManager;
+    return AppServer;
 }());
-exports.default = AdaptarManager;
-var placementCallback = function (placement, index) {
-    placement.providers.each(function (provider, index) {
-        makeBidRequest(placement, provider);
-    });
-};
-function makeBidRequest(placement, providerConfig) {
-    var urlProvider = "http://localhost:3000/provider/";
-    if (providerConfig.id.startsWith("AMZP")) {
-        urlProvider += "amazon";
-    }
-    else if (providerConfig.id.startsWith("APPNXP")) {
-        urlProvider += "appnexus";
-    }
-    else if (providerConfig.id.startsWith("OPNXP")) {
-        urlProvider += "openx";
-    }
-    var requestParams = getRequestData(placement, providerConfig, urlProvider, "POST");
-    LogManager_1.default.log(requestParams.data, 1);
-    defferedRequests.push(requestParams);
-}
-function getRequestData(placement, providerConfig, urlProvider, method) {
-    return {
-        "url": urlProvider,
-        "data": {
-            "bidFloorPrice": providerConfig.bidprice,
-            "providerID": providerConfig.id,
-            "adPlacementID": placement.id,
-            "epc": providerConfig.epc,
-            "ecc": providerConfig.ecc,
-            "sizes": placement.size,
-        },
-        "method": method
-    };
-}
+exports.default = AppServer;

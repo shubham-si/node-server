@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import {sendResponseAmazon} from '../providers/amazon.controller'
-import {sendResponseAppnexus} from '../providers/appnexus.controller'
-import {sendResponseOpenx} from '../providers/openx.controller'
+import {sendResponseAmazon} from '../../providers/amazon.controller'
+import {sendResponseAppnexus} from '../../providers/appnexus.controller'
+import {sendResponseOpenx} from '../../providers/openx.controller'
 
 const providerRouter = Router();
 

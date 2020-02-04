@@ -1,4 +1,4 @@
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+//import { XMLHttpRequest} from 'xmlhttprequest-ts';
 
 export class Ajax {
     private url: string;
@@ -20,7 +20,7 @@ export class Ajax {
         this.objHttpReq.onreadystatechange = ()=>this.OnReadyStateChange(defer);
         this.objHttpReq.ontimeout =()=> this.OnRequestTimeout(defer);
         this.objHttpReq.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        this.objHttpReq.setRequestHeader('Content-Type', 'application/json');  
+        this.objHttpReq.setRequestHeader('Content-Type', 'application/json');
         this.objHttpReq.timeout=2000;
 
         if(this.data==undefined){

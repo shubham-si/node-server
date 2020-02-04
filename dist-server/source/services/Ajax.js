@@ -1,6 +1,6 @@
 "use strict";
+//import { XMLHttpRequest} from 'xmlhttprequest-ts';
 Object.defineProperty(exports, "__esModule", { value: true });
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var Ajax = /** @class */ (function () {
     function Ajax(postUrl, postData, method) {
         this.method = method;

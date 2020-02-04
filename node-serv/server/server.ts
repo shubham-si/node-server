@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 
 import indexRouter from './routes/index.routes'                     // alias for indexRouter object in index.routes.ts
 import providerRouter from './routes/provider.routes'
-import LogManager from './services/LogManager';
 
 
 export default class AppServer {
@@ -26,8 +25,15 @@ export default class AppServer {
     }
 
     private routes() {
+        this.express.all('/*', function(req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+          });
+
         this.express.use(indexRouter);                                       // by default '/' as path
         this.express.use('/provider',providerRouter);
+
     }
 
     public async listen():Promise<any>{

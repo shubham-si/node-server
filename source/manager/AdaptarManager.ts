@@ -1,11 +1,9 @@
 
-import PlacementRepo, { providersConfig } from '../../source/config/ConfigBuilder';
-import {Placement} from '../../source/config/models/Placement';
-import { json } from 'body-parser';
-import {PlacementProviderConfig} from '../../source/config/Type';
-import {Ajax,Deferred} from '../services/Ajax';
-
-import Logger from '../services/LogManager';
+import PlacementRepo, { providersConfig } from '../config/ConfigBuilder';
+import {Placement} from '../config/models/Placement';
+import {PlacementProviderConfig} from '../config/Type';
+import Logger from './LogManager';
+import { Deferred, Ajax } from '../services/Ajax';
 
 var defferedRequests =[];
 
@@ -13,7 +11,7 @@ console.log(defferedRequests.length);
 
 export default class AdaptarManager{
 
-async makeRequestToProviders(requestBody:any):Promise<any>{
+async makeRequestToProviders():Promise<any>{
 
     defferedRequests=[];
     PlacementRepo.each(placementCallback);

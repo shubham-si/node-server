@@ -9,4 +9,6 @@ indexRouter.route('/')
 indexRouter.route('/configs')
     .post(getConfigs);
 
+
+
 export default indexRouter;
