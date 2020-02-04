@@ -11,17 +11,8 @@ const filePath="/Users/shubham.si/Documents/node_server/build/bundle.js";
 
 export function getConfigs(req: Request, res: Response){
    
-console.log(__dirname)
-   // this will send bundled js file to publisher's request
 
-   // new AdaptarManager().makeRequestToProviders(req.body).then(responses=>{
-   //       let auctionResult = new AuctionManager().conductAuction(responses);
-   //       Logger.log(auctionResult,2);
-   //      // console.log(auctionResult);
-   //       res.send(auctionResult);
-   //    },err=>{
-   //       err.send('OK error');
-   //    });
+   
     getBundleJsFile(req, res);
       
 }

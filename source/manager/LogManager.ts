@@ -12,29 +12,21 @@ class LogManager{
 
     public log(data:any,level:number){
         if(level==LogManager.LEVEL_1){
-           
+            this.logData(data,"logAuctionParticipant");
         }else if(level==LogManager.LEVEL_2){
-            this.logging(data);
+            this.logData(data,"logProviderResponse");
         }
         
     }
 
-    private logging(data:any){
-        debugger;
-        //console.log(JSON.stringify(data));
-        //console.log(data);
-        
-        let ajax= new Ajax("http://localhost:8080/logging",data,"POST");
+    private logData(data:any,url:string){
+        let ajax= new Ajax("http://localhost:8080/"+url,data,"POST");
         ajax.callService().then((res)=>{
             console.log('res');
          },(rej)=>{
              console.log('logging error');
          });
-         
-         
-    }
-
-    
+    }    
 }
 
 const Logger:LogManager =new LogManager();

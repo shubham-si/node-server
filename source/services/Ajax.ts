@@ -1,5 +1,3 @@
-//import { XMLHttpRequest} from 'xmlhttprequest-ts';
-
 export class Ajax {
     private url: string;
     private data: any;

@@ -1,12 +1,16 @@
 import AuctionManager from "../manager/AuctionManager";
 import Logger from "../manager/LogManager";
 import AdaptarManager from "../manager/AdaptarManager";
+import { providersMap } from "../config/ConfigBuilder";
 
 
 
 function loadAds(){
-   // console.log('load ads');
-    new AdaptarManager().makeRequestToProviders().then(responses=>{
+
+   logParticipants();
+
+
+   new AdaptarManager().makeRequestToProviders().then(responses=>{
         let auctionResult = new AuctionManager().conductAuction(responses);
         Logger.log(auctionResult,2);
         showAds(auctionResult);
@@ -30,6 +34,22 @@ function showAds(auctionResult){
           }
       })
   })
+}
+
+function logParticipants(){
+   let requestPayload=[];
+   Object.keys(providersMap).forEach((adslotId,index)=>{
+      Object.keys(providersMap[adslotId]).forEach((provider,_)=>{
+         requestPayload.push({
+            "id":providersMap[adslotId][provider].id,
+            "ecc":providersMap[adslotId][provider].ecc,
+            "epc":providersMap[adslotId][provider].ecc,
+         });
+      })
+   });
+
+   console.log(requestPayload);
+   //Logger.log(requestPayload,1);
 }
 
 loadAds();
