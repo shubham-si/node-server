@@ -7,7 +7,7 @@ import { providersMap } from "../config/ConfigBuilder";
 
 function loadAds(){
 
-   logParticipants();
+   //logParticipants();
 
 
    new AdaptarManager().makeRequestToProviders().then(responses=>{
