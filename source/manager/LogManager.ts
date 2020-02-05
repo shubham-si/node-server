@@ -7,7 +7,7 @@ class LogManager{
     public static LEVEL_INFO:number=0;
 
     constructor(){
-        console.log('logmanager');
+       
     }
 
     public log(data:any,level:number){

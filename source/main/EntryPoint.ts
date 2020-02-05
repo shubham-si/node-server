@@ -7,7 +7,7 @@ import { providersMap } from "../config/ConfigBuilder";
 
 function loadAds(){
 
-   //logParticipants();
+   logParticipants();
 
 
    new AdaptarManager().makeRequestToProviders().then(responses=>{
@@ -43,13 +43,13 @@ function logParticipants(){
          requestPayload.push({
             "id":providersMap[adslotId][provider].id,
             "ecc":providersMap[adslotId][provider].ecc,
-            "epc":providersMap[adslotId][provider].ecc,
+            "epc":providersMap[adslotId][provider].epc,
          });
       })
    });
 
    console.log(requestPayload);
-   //Logger.log(requestPayload,1);
+   Logger.log(requestPayload,1);
 }
 
 loadAds();
