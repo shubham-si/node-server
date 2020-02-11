@@ -5,35 +5,34 @@ type configMap ={[key:string]:any;};
 const providerNames ={
     "AMZP002":"AMAZON_CREATIVE",
     "APPNXP003":"APPNEXUS_CREATIVE",
-    "OPNXP004":"OPENX_CREATIVE"
+    "OPNXP004":"OPENX_CREATIVE",
+    "RUBIC005":"RUBICON_CREATIVE",
+    "PUBM006":"PUBMATICS",
+    "SONOB007":"SONOBI"
 }
 
 
-export function getResponse(reqBody:ResponseFormat){
-    var sizes= reqBody.sizes.split(":");                                 // if multiple sizes
+export function getResponse(reqBody:any){
 
-    var response={};
-    var sizeMapProviderConfig :configMap={};
-    
-    sizes.forEach((size)=>{
-        sizeMapProviderConfig[size]=
-            {
-                "bidPrice":getRandomInt(15),
-                "adcode":getAdcode(size,reqBody.providerID),
-                "providerid":reqBody.providerID,
-                "ecc":reqBody.ecc,
-                "epc":reqBody.epc,
-                "size":size
-            };
-    })
+    let sizeMapProviderConfig :configMap={};
 
-    response[reqBody.epc]=[];
-    
-    Object.keys(sizeMapProviderConfig).forEach((size,index)=>{
-        response[reqBody.epc].push({[size]:sizeMapProviderConfig[size]});
+    Object.keys(reqBody).forEach((adslot)=>{
+        sizeMapProviderConfig[adslot]=getResponseFormat(reqBody[adslot]);
     });
 
-    return response;
+    return sizeMapProviderConfig;
+}
+
+function getResponseFormat(reqAdslotData):any{
+
+    return {
+        "bidPrice":getRandomInt(15),
+        "adcode":getAdcode(reqAdslotData),
+        "providerid":reqAdslotData.id,
+        "ecc":reqAdslotData.ecc,
+        "epc":reqAdslotData.epc,
+        "size":reqAdslotData.size,
+    }
 }
 
 function getRandomInt(max:number) {
@@ -41,8 +40,8 @@ function getRandomInt(max:number) {
 }
 
 
-function getAdcode(size:string,providerID:string):any{
-    let sizePx=size.split(",");
+function getAdcode(reqAdslotData):any{
+    let sizePx=reqAdslotData.size.split("*");
     
     let adcode =
     "<!DOCTYPE html>" +
@@ -65,7 +64,7 @@ function getAdcode(size:string,providerID:string):any{
             // tslint:disable-next-line: max-line-length
             "h3{ font-family: arial; color: #000; font-size: 35px; text-align: center; height: " + sizePx[0] + "px; line-height: " + sizePx[1] + "px;}" +
             "</style>" +
-            "<h3>" + providerNames[providerID] + "</h3>" +
+            "<h3>" + providerNames[reqAdslotData.id] + "</h3>" +
             "</body>" +
             "</html>";
         return adcode;

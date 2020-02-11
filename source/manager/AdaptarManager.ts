@@ -1,5 +1,5 @@
 
-import PlacementRepo, { providersConfig } from '../config/ConfigBuilder';
+import {placementRepo,providersConfig } from '../config/ConfigBuilder';
 import {Placement} from '../config/models/Placement';
 import {PlacementProviderConfig} from '../config/Type';
 import Logger from './LogManager';
@@ -7,19 +7,16 @@ import { Deferred, Ajax } from '../services/Ajax';
 
 var defferedRequests =[];
 
-console.log(defferedRequests.length);
+//console.log(defferedRequests.length);
 
 export default class AdaptarManager{
 
 async makeRequestToProviders():Promise<any>{
 
     defferedRequests=[];
-    PlacementRepo.each(placementCallback);
+    placementRepo.each(placementCallback);
 
     let defer = new Deferred();
-
-    //console.log("placement repo");
-    //console.log(JSON.stringify(PlacementRepo));
 
     Promise.all(defferedRequests.map((reqParam,i)=>{
         return new Promise((resolve,reject)=>{
@@ -38,6 +35,14 @@ async makeRequestToProviders():Promise<any>{
 
     return defer.promise;
 
+    }
+
+    public resolveAdapter(adapter:string):any{
+        
+    }
+
+    public toString(){
+        //console.log("resolver done");
     }
 }
 

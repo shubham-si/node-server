@@ -3,21 +3,25 @@ import Logger from "../manager/LogManager";
 import AdaptarManager from "../manager/AdaptarManager";
 import { providersMap } from "../config/ConfigBuilder";
 
+import CoreModule from './CoreModule';
+import AdapterResolver from '../resolver/AdapterResolver';
+import { response } from "express";
+
 
 
 function loadAds(){
 
-   logParticipants();
+   //logParticipants();
+   let coreModule= new CoreModule();
+   coreModule.init();
 
+   coreModule.requestService().then((responses)=>{
+      let auctionResult = new AuctionManager().conductAuction(responses);
+      showAds(auctionResult);
+   },err=>{
+      err.send('OK error');
+   });
 
-   new AdaptarManager().makeRequestToProviders().then(responses=>{
-        let auctionResult = new AuctionManager().conductAuction(responses);
-        Logger.log(auctionResult,2);
-        showAds(auctionResult);
-        //res.send(auctionResult);
-     },err=>{
-        err.send('OK error');
-     });
 };
 
 function showAds(auctionResult){
@@ -29,7 +33,6 @@ function showAds(auctionResult){
               let doc= iWindow.document;
               doc.open();
               doc.write(auctionResult[placementid][sizeInf][0].adcode);
-              console.log(auctionResult[placementid][sizeInf][0].adcode);
               doc.close();
           }
       })

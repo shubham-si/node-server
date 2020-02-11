@@ -4,9 +4,10 @@ import {Repository} from "../contracts/servicecontracts/Repo"
 export interface ProviderConfig{
     id:string,
     providername:string,
+    entrypoint:string,
 }
 
-type ProviderConfigMap={
+export type ProviderConfigMap={
     [key:string]:ProviderConfig
 }
 

@@ -6,13 +6,11 @@ export function indexWelcome(req: Request, res: Response) {
 }
 
 import * as fs from 'fs';
+import { json } from 'body-parser';
 const filePath="/Users/shubham.si/Documents/node_server/build/bundle.js";
 
 
 export function getConfigs(req: Request, res: Response){
-   
-
-   
     getBundleJsFile(req, res);
       
 }

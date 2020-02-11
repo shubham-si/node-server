@@ -1,14 +1,15 @@
 import config from "./sources/config";
 import { Placement } from "./models/Placement";
-import {PlacementProviderConfigRepo, Repository,PlacementRepo} from '../contracts/servicecontracts/Repo'
+import {PlacementProviderConfigRepo, Repository,PlacementRepo,ProviderRepo} from '../contracts/servicecontracts/Repo'
 
-import {PlacementProviderConfigMap,PlacementProviderConfig, PlacementsInfoMap} from './Type'
+import {PlacementProviderConfigMap,PlacementProviderConfig, PlacementsInfoMap,ProviderConfig} from './Type'
 
 export const adSlotConfig = config.adslots;
 export const providersConfig =config.providers;
 export const providersMap = config.providersmap;
 
-const placementRepo:PlacementRepo<number,Placement> = new PlacementRepo<number,Placement>(); 
+export const placementRepo:PlacementRepo<number,Placement> = new PlacementRepo<number,Placement>(); 
+export const providerRepo:ProviderRepo<string,ProviderConfig> =new ProviderRepo<string,ProviderConfig>();
 
 (function(){
       Object.keys(adSlotConfig).forEach((key: string) => {
@@ -26,6 +27,10 @@ const placementRepo:PlacementRepo<number,Placement> = new PlacementRepo<number,P
                
             placementRepo.add(new Placement(<PlacementsInfoMap>placementInfMap));
       });
+
+      Object.keys(providersConfig).forEach((providerKey: string) => {
+            let providerConfig = providersConfig[providerKey];
+            providerRepo.add(providerConfig);
+      });
 })();
 
-export default placementRepo;

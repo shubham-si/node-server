@@ -20,13 +20,15 @@ class LogManager{
     }
 
     private logData(data:any,url:string){
-        let ajax= new Ajax("http://localhost:8080/"+url,data,"POST");
+       /* let ajax= new Ajax("http://localhost:8080/"+url,data,"POST");
         ajax.callService().then((res)=>{
             console.log('res');
          },(rej)=>{
              console.log('logging error');
          });
+          */
     }    
+   
 }
 
 const Logger:LogManager =new LogManager();
