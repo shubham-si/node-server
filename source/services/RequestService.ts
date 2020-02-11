@@ -1,17 +1,25 @@
 import { Ajax } from "./Ajax";
 
-
 class RequestService{
 
-    constructor(){
+    private eventSource;
+    constructor(){}
+
+    public initiateRequest(requestPayload: any){
+       
+        this.eventSource = new EventSource(requestPayload.url+"?reqString="+requestPayload.reqString);
         
+        this.eventSource.addEventListener('resp', this.onmessage);
+        this.eventSource.addEventListener('close', this.onclose);
     }
 
-    public async initiateRequest(requestPayload: any){
-        let adExchangeReqAjax = new Ajax(requestPayload.url,requestPayload.reqString,requestPayload.method);
-        let promiseRet = adExchangeReqAjax.callService();
-        await promiseRet;
-        
+    private onmessage(event ){
+        console.log(event.data);
+    }
+
+    private onclose(event){
+        console.log("closing");
+        this.eventSource.close();
     }
 }
 

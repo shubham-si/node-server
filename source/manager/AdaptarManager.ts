@@ -17,12 +17,13 @@ async makeRequestToProviders():Promise<any>{
     placementRepo.each(placementCallback);
 
     let defer = new Deferred();
-
+    
     Promise.all(defferedRequests.map((reqParam,i)=>{
         return new Promise((resolve,reject)=>{
             try{
                 new Ajax(reqParam.url,reqParam.data,reqParam.method).callService()
                 .then((response)=>{
+
                     resolve(response)
                 })
             }catch(err){

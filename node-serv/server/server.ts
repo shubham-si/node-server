@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 
 import indexRouter from './routes/index.routes'                     // alias for indexRouter object in index.routes.ts
 import providerRouter from './routes/provider.routes'
+import adexchangeRouter from './routes/adexchange.routes'
 
 
 export default class AppServer {
@@ -33,6 +34,7 @@ export default class AppServer {
 
         this.express.use(indexRouter);                                       // by default '/' as path
         this.express.use('/provider',providerRouter);
+        this.express.use('/adexchange',adexchangeRouter);
 
     }
 

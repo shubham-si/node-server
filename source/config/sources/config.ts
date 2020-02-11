@@ -54,42 +54,42 @@ export default {
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "AMZ_FRB002"
+        "ecc": "AMZFRB"
       },
       "APPNXP003": {
         "id": "APPNXP003",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "APNX_FRB003"
+        "ecc": "APNXFRB"
       },
       "OPNXP004": {
         "id": "OPNXP004",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "OPNX_FRB002"
+        "ecc": "OPNXFRB"
       },
       "PUBM006": {
         "id": "PUBM006",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "PUBM_FRB003"
+        "ecc": "PUBMFRB"
       },
       "RUBIC005": {
         "id": "RUBIC005",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "RUBC_FRB002"
+        "ecc": "RUBCFRB"
       },
       "SONOB007": {
         "id": "SONOB007",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "SONB_FRB002"
+        "ecc": "SONBFRB"
       }
     },
     "124": {
@@ -98,42 +98,42 @@ export default {
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "AMZ_FRB002"
+        "ecc": "AMZFRB"
       },
       "APPNXP003": {
         "id": "APPNXP003",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "APNX_FRB003"
+        "ecc": "APNXFRB"
       },
       "OPNXP004": {
         "id": "OPNXP004",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "OPNX_FRB002"
+        "ecc": "OPNXFRB"
       },
       "PUBM006": {
         "id": "PUBM006",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "PUBM_FRB003"
+        "ecc": "PUBMFRB"
       },
       "RUBIC005": {
         "id": "RUBIC005",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "RUBC_FRB002"
+        "ecc": "RUBCFRB"
       },
       "SONOB007": {
         "id": "SONOB007",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "SONB_FRB002"
+        "ecc": "SONBFRB"
       }
     }
   }

@@ -31,7 +31,7 @@ class AdExchnage{
     }
 
     private getRequestPayload(placement:Placement, providerConfig: PlacementProviderConfig,providerId?:string):string{
-        let reqString=placement.id+"@"+providerId+"*"+placement.size+"_"+providerConfig.epc+"_"+providerConfig.ecc;
+        let reqString=placement.id+"@"+providerId+"_"+placement.size+"_"+providerConfig.bidprice+"_"+providerConfig.revshare+"_"+providerConfig.epc+"_"+providerConfig.ecc;
         return reqString;
     }
 

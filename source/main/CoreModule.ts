@@ -42,7 +42,7 @@ export default class CoreModule{
             if(adapter=="AdExchange"){
                 RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]); 
             }else{
-                 defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
+                // defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
             }
         });
 
