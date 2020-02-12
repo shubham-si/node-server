@@ -6,7 +6,6 @@ export function indexWelcome(req: Request, res: Response) {
 }
 
 import * as fs from 'fs';
-import { json } from 'body-parser';
 const filePath="/Users/shubham.si/Documents/node_server/build/bundle.js";
 
 
