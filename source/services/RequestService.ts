@@ -33,9 +33,7 @@ class RequestService{
 
     private onclose(_event,_defer,_adExchangeResponse,_eventSource){
 
-        console.log(_event.lastEventId);
-        if(_event.lastEventId=='-1'){
-            
+        if(_event.lastEventId=='-1'){ 
             _adExchangeResponse.push(JSON.parse(_event.data));
             _defer.resolve(_adExchangeResponse);
             _eventSource.close();
