@@ -1,18 +1,19 @@
 import AuctionManager from "../manager/AuctionManager";
 import Logger from "../manager/LogManager";
-import { providersMap } from "../config/ConfigBuilder";
+import { providersMap, adSlotConfig } from "../config/ConfigBuilder";
 import CoreModule from './CoreModule';
 
 
 
 function loadAds(){
 
-   //logParticipants();
    let coreModule= new CoreModule();
    coreModule.init();
 
    coreModule.requestService().then((responses)=>{
-      console.log(JSON.stringify(responses));
+      
+      logProviderResponses(responses);
+
       let auctionResult = new AuctionManager().conductAuction(responses);
       showAds(auctionResult);
    },err=>{
@@ -36,19 +37,22 @@ function showAds(auctionResult){
   })
 }
 
-function logParticipants(){
-   let requestPayload=[];
-   Object.keys(providersMap).forEach((adslotId,index)=>{
-      Object.keys(providersMap[adslotId]).forEach((provider,_)=>{
-         requestPayload.push({
-            "id":providersMap[adslotId][provider].id,
-            "ecc":providersMap[adslotId][provider].ecc,
-            "epc":providersMap[adslotId][provider].epc,
-         });
-      })
-   });
+function logProviderResponses(providerResponses){
+   let requestPayload={};
 
-   console.log(requestPayload);
+   providerResponses.forEach((providerResponseAdslotMap)=>{
+
+      Object.keys(providerResponseAdslotMap).forEach((adSlotConfig)=>{
+
+         let providerId= providerResponseAdslotMap[adSlotConfig].id;
+         requestPayload[providerResponseAdslotMap[adSlotConfig].id] =requestPayload[providerId] || {};
+         requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig]=requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig] || {};
+
+         requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig]= providerResponseAdslotMap[adSlotConfig];
+
+      });
+   })
+
    Logger.log(requestPayload,1);
 }
 

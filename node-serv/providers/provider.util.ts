@@ -14,24 +14,35 @@ const providerNames ={
 
 export function getResponse(reqBody:any){
 
+    //console.log(JSON.stringify(reqBody));
+
     let sizeMapProviderConfig :configMap={};
 
     Object.keys(reqBody).forEach((adslot)=>{
-        sizeMapProviderConfig[adslot]=getResponseFormat(reqBody[adslot]);
+        let response=getResponseFormat(reqBody[adslot]);
+
+        response['status']='No Bid';
+        if(response.bidPrice!=0){
+            response['status']='Valid Bid';
+        }else{
+            response.adcode='<EMPTY>';
+        }
+
+        sizeMapProviderConfig[adslot]=response;
     });
 
     return sizeMapProviderConfig;
 }
 
 function getResponseFormat(reqAdslotData):any{
-
     return {
         "bidPrice":getRandomInt(15),
         "adcode":getAdcode(reqAdslotData),
-        "providerid":reqAdslotData.id,
+        "id":reqAdslotData.id,          
         "ecc":reqAdslotData.ecc,
-        "epc":reqAdslotData.epc,
+        "epc":+reqAdslotData.epc,
         "size":reqAdslotData.size,
+        "revshare":+reqAdslotData.revshare,
     }
 }
 

@@ -17,7 +17,6 @@ class RequestService{
 
         this.eventSource.addEventListener('message', ()=>this.onmessage(event,this._defer,this.adExchangeResponse,this.eventSource));
         this.eventSource.addEventListener('close', ()=>this.onclose(event,this._defer,this.adExchangeResponse,this.eventSource));
-
         this.eventSource.addEventListener('error', ()=>this.onerror(event,this.eventSource));
 
         return this._defer.promise;

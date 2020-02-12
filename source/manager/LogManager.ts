@@ -1,4 +1,5 @@
 import { Ajax } from '../services/Ajax';
+import { placementRepo } from '../config/ConfigBuilder';
 
 class LogManager{
 
@@ -12,21 +13,20 @@ class LogManager{
 
     public log(data:any,level:number){
         if(level==LogManager.LEVEL_1){
-            this.logData(data,"logAuctionParticipant");
-        }else if(level==LogManager.LEVEL_2){
             this.logData(data,"logProviderResponse");
+        }else if(level==LogManager.LEVEL_2){
+            this.logData(data,"logAuctionParticipant");
         }
-        
     }
-
-    private logData(data:any,url:string){
-       /* let ajax= new Ajax("http://localhost:8080/"+url,data,"POST");
+    
+    private async logData(data:any,url:string){
+       let ajax= new Ajax("http://localhost:8080/"+url,data,"POST");
         ajax.callService().then((res)=>{
-            console.log('res');
+            console.log('done providerResponseLog');
          },(rej)=>{
              console.log('logging error');
          });
-          */
+         
     }    
    
 }

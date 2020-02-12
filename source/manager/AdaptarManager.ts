@@ -21,7 +21,6 @@ async makeRequestToProviders():Promise<any>{
             try{
                 new Ajax(reqParam.url,reqParam.data,reqParam.method).callService()
                 .then((response)=>{
-
                     resolve(response)
                 })
             }catch(err){
@@ -38,10 +37,6 @@ async makeRequestToProviders():Promise<any>{
 
     public resolveAdapter(adapter:string):any{
         
-    }
-
-    public toString(){
-        //console.log("resolver done");
     }
 }
 
