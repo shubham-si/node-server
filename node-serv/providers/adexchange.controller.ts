@@ -49,10 +49,11 @@ export  function getResponseStream(req: Request, res: Response) {
         },(err)=>{
             counterReq++;
             if(counterReq==defferedRequestArray.length){
-                res.write("event:close");
-                res.write("\n")
-                res.write("data: CLOSE");
+                res.write("event:close\n");
+                res.write('id: -1'+'\n'+'data: '+JSON.stringify(response)+'\n\n');   
                 res.end();
+            }else{
+                res.write('id: -1'+'\n'+'data: '+{"status":"NO"}+'\n\n');   
             }
         })
     })

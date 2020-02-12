@@ -37,20 +37,20 @@ export default class CoreModule{
     public requestService():Promise<any>{
 
         let defferedRequests=[];
-        
+        let adExchangePromise:Promise<any>;
+
+
         Object.keys(CoreModule.batchedJobQueueMap).forEach((adapter)=>{
             if(adapter=="AdExchange"){
-                RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]).then((_rersponses)=>{
-                    console.log(_rersponses);
-                })
+                adExchangePromise= RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]);
             }else{
-                // defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
+                defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
             }
         });
 
         let defer = new Deferred();
 
-        Promise.all(defferedRequests.map((reqParam,i)=>{
+        Promise.all([adExchangePromise,...defferedRequests.map((reqParam,i)=>{
             return new Promise((resolve,reject)=>{
                 try{
                     new Ajax(reqParam.url,reqParam.reqPayload,reqParam.method).callService()
@@ -61,8 +61,8 @@ export default class CoreModule{
                     reject(err);
                 }
             })
-        })).then((responses)=>{
-            console.log(responses);
+        })]).then((responses)=>{
+            responses= [].concat.apply([], responses);
             defer.resolve(responses);                   // {adslot:size:[{bidprice,adcode}]}
         });
 

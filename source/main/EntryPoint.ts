@@ -12,6 +12,7 @@ function loadAds(){
    coreModule.init();
 
    coreModule.requestService().then((responses)=>{
+      console.log(JSON.stringify(responses));
       let auctionResult = new AuctionManager().conductAuction(responses);
       showAds(auctionResult);
    },err=>{

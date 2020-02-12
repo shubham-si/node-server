@@ -7,8 +7,6 @@ import { Deferred, Ajax } from '../services/Ajax';
 
 var defferedRequests =[];
 
-//console.log(defferedRequests.length);
-
 export default class AdaptarManager{
 
 async makeRequestToProviders():Promise<any>{
