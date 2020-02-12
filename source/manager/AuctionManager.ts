@@ -34,8 +34,8 @@ export default class AuctionManager{
             
         });
 
-        Logger.log(placementmap,2);
-        return placementmap;
+       Logger.log(placementmap,2);
+       return placementmap;
     }
 
     private getAuctionBidPrice(orgBidPrice:number,revshare:number):number{

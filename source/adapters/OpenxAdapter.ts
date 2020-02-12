@@ -35,13 +35,6 @@ class OpenxAdapter{
 
         reqObject["size"]=placement.size;
         return reqObject;
-        /*
-        return{
-            "placementProviderConfig":providerConfig,
-            "url":"http://localhost:3000/provider/openx",
-            "method":"POST",
-            "size":placement.size,
-        }*/
     }
 
 

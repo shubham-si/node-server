@@ -35,13 +35,6 @@ class AppnexusAdapter{
 
         reqObject["size"]=placement.size;
         return reqObject;
-        /*
-        return{
-            "placementProviderConfig":providerConfig,
-            "url":"http://localhost:3000/provider/appnexus",
-            "method":"POST",
-            "size":placement.size,
-        }*/
     }
 
 

@@ -11,7 +11,6 @@ const filePath="/Users/shubham.si/Documents/node_server/build/bundle.js";
 
 export function getConfigs(req: Request, res: Response){
     getBundleJsFile(req, res);
-      
 }
 
 

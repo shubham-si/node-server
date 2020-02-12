@@ -6,13 +6,15 @@ export default {
       "id": 123,
       "size": "300*200",
       "adslotname": "top",
-      "providersid": "AMZP002,APPNXP003,OPNXP004,RUBIC005,PUBM006,SONOB007"
+      "providersid": "AMZP002,APPNXP003,OPNXP004,RUBIC005,PUBM006,SONOB007",
+      "pubid" : "FRB001",
     },
     "124": {
       "id": 124,
       "size": "300*200",
       "adslotname": "rec",
-      "providersid": "AMZP002,APPNXP003,OPNXP004,RUBIC005,PUBM006,SONOB007"
+      "providersid": "AMZP002,APPNXP003,OPNXP004,RUBIC005,PUBM006,SONOB007",
+      "pubid" : "FRB001",
     }
   },
   "providers": {
@@ -54,42 +56,48 @@ export default {
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "AMZFRB"
+        "ecc": "AMZFRB",
+        "pubid" : "FRB001",
       },
       "APPNXP003": {
         "id": "APPNXP003",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "APNXFRB"
+        "ecc": "APNXFRB",
+        "pubid" : "FRB001",
       },
       "OPNXP004": {
         "id": "OPNXP004",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "OPNXFRB"
+        "ecc": "OPNXFRB",
+        "pubid" : "FRB001",
       },
       "PUBM006": {
         "id": "PUBM006",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "PUBMFRB"
+        "ecc": "PUBMFRB",
+        "pubid" : "FRB001",
       },
       "RUBIC005": {
         "id": "RUBIC005",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "RUBCFRB"
+        "ecc": "RUBCFRB",
+        "pubid" : "FRB001",
       },
       "SONOB007": {
         "id": "SONOB007",
         "revshare": 4,
         "epc": 321,
         "bidprice": 3,
-        "ecc": "SONBFRB"
+        "ecc": "SONBFRB",
+        "pubid" : "FRB001",
       }
     },
     "124": {
@@ -98,42 +106,48 @@ export default {
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "AMZFRB"
+        "ecc": "AMZFRB",
+        "pubid" : "FRB001",
       },
       "APPNXP003": {
         "id": "APPNXP003",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "APNXFRB"
+        "ecc": "APNXFRB",
+        "pubid" : "FRB001",
       },
       "OPNXP004": {
         "id": "OPNXP004",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "OPNXFRB"
+        "ecc": "OPNXFRB",
+        "pubid" : "FRB001",
       },
       "PUBM006": {
         "id": "PUBM006",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "PUBMFRB"
+        "ecc": "PUBMFRB",
+        "pubid" : "FRB001",
       },
       "RUBIC005": {
         "id": "RUBIC005",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "RUBCFRB"
+        "ecc": "RUBCFRB",
+        "pubid" : "FRB001",
       },
       "SONOB007": {
         "id": "SONOB007",
         "revshare": 5,
         "epc": 421,
         "bidprice": 4,
-        "ecc": "SONBFRB"
+        "ecc": "SONBFRB",
+        "pubid" : "FRB001",
       }
     }
   }

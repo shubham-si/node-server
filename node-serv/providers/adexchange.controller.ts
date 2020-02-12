@@ -84,6 +84,7 @@ function getRequest(reqParams:any[]){
         "bidprice":reqParams[3],
         "epc":reqParams[4],
         "ecc":reqParams[5],
+        "pubid":reqParams[6],
     }
 }
 

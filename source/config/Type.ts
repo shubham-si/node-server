@@ -18,6 +18,7 @@ export interface PlacementProviderConfig{
     epc:number,
     bidprice:number,
     ecc:string,
+    pubid:string,
 }
 
 export type PlacementProviderConfigMap = {
@@ -34,6 +35,7 @@ export interface PlacementConfig{
     size:string,
     adslotname:string,
     providersid:string,
+    pubid:string,
 }
 
 type PlacementConfigMap ={

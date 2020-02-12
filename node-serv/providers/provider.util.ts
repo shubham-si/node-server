@@ -43,6 +43,7 @@ function getResponseFormat(reqAdslotData):any{
         "epc":+reqAdslotData.epc,
         "size":reqAdslotData.size,
         "revshare":+reqAdslotData.revshare,
+        "pubid":reqAdslotData.pubid,
     }
 }
 
