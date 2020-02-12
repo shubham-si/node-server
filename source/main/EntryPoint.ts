@@ -1,11 +1,7 @@
 import AuctionManager from "../manager/AuctionManager";
 import Logger from "../manager/LogManager";
-import AdaptarManager from "../manager/AdaptarManager";
 import { providersMap } from "../config/ConfigBuilder";
-
 import CoreModule from './CoreModule';
-import AdapterResolver from '../resolver/AdapterResolver';
-import { response } from "express";
 
 
 

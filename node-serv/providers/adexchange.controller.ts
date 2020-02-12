@@ -12,7 +12,7 @@ export  function getResponseStream(req: Request, res: Response) {
     res.header("Content-Type","text/event-stream");
     res.header("Cache-Control", "no-cache");
     res.header("Connection","keep-alive");
-    res.header("Keep-Alive","timeout=5 max=12")       
+   // res.header("Keep-Alive","timeout=5 max=12")       
     
     let requestArray = req.query['reqString'].split("|");
     var defferedRequestsMap = {};
@@ -31,17 +31,20 @@ export  function getResponseStream(req: Request, res: Response) {
 
     defferedRequestArray.forEach((ajaxReq:Ajax)=>{
         ajaxReq.callService().then((response)=>{
-            res.write("event:resp");
-            res.write("\n")
-            res.write("data: "+JSON.stringify(response)+"\n\n");
-            
+
+
             counterReq++;
+        
             if(counterReq==defferedRequestArray.length){
-                res.write("event:close");
+
+                    res.write("event:close\n");
+                    res.write('id: -1'+'\n'+'data: '+JSON.stringify(response)+'\n\n');   
+
+                    res.end();
+            }else{
+                res.write("event:message");
                 res.write("\n")
-                res.write("data: CLOSE");
-                console.log(counterReq);
-                res.end();
+                res.write("data: "+JSON.stringify(response)+"\n\n");
             }
         },(err)=>{
             counterReq++;

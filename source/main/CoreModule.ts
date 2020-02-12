@@ -40,7 +40,9 @@ export default class CoreModule{
         
         Object.keys(CoreModule.batchedJobQueueMap).forEach((adapter)=>{
             if(adapter=="AdExchange"){
-                RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]); 
+                RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]).then((_rersponses)=>{
+                    console.log(_rersponses);
+                })
             }else{
                 // defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
             }

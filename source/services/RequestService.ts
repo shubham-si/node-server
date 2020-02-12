@@ -1,25 +1,45 @@
-import { Ajax } from "./Ajax";
+import { Ajax, Deferred } from "./Ajax";
 
 class RequestService{
 
     private eventSource;
+    private adExchangeResponse:any[];
+    private _defer:Deferred;
+
     constructor(){}
 
-    public initiateRequest(requestPayload: any){
-       
-        this.eventSource = new EventSource(requestPayload.url+"?reqString="+requestPayload.reqString);
+    public initiateRequest(requestPayload: any):Promise<any[]>{
         
-        this.eventSource.addEventListener('resp', this.onmessage);
-        this.eventSource.addEventListener('close', this.onclose);
+        this._defer= new Deferred();
+        this.adExchangeResponse=[];
+
+        this.eventSource = new EventSource(requestPayload.url+"?reqString="+requestPayload.reqString);
+
+        this.eventSource.addEventListener('message', ()=>this.onmessage(event,this._defer,this.adExchangeResponse,this.eventSource));
+        this.eventSource.addEventListener('close', ()=>this.onclose(event,this._defer,this.adExchangeResponse,this.eventSource));
+
+        this.eventSource.addEventListener('error', ()=>this.onerror(event,this.eventSource));
+
+        return this._defer.promise;
     }
 
-    private onmessage(event ){
-        console.log(event.data);
+    private onerror(event,_eventSource){
+        _eventSource.close();
     }
 
-    private onclose(event){
-        console.log("closing");
-        this.eventSource.close();
+    private onmessage(event,_defer,_adExchangeResponse,_eventSource){ 
+            _adExchangeResponse.push(JSON.parse(event.data));
+    }
+
+    private onclose(_event,_defer,_adExchangeResponse,_eventSource){
+
+        console.log(_event.lastEventId);
+        if(_event.lastEventId=='-1'){
+            
+            _adExchangeResponse.push(JSON.parse(_event.data));
+            _defer.resolve(_adExchangeResponse);
+            _eventSource.close();
+        }
     }
 }
 
