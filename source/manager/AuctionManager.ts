@@ -24,7 +24,6 @@ export default class AuctionManager{
                 response[adslotid]["auction_placementID"]=auction_placementID;
 
                 response[adslotid]["sharedBid"]=0;
-                response[adslotid]["adcode"]="";
                 if(response[adslotid].status=="Valid Bid"){
                     response[adslotid]["sharedBid"]= this.getAuctionBidPrice(response[adslotid].bidPrice,response[adslotid].revshare);
                 }

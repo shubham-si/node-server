@@ -1,6 +1,5 @@
 import AuctionManager from "../manager/AuctionManager";
 import Logger from "../manager/LogManager";
-import { providersMap, adSlotConfig } from "../config/ConfigBuilder";
 import CoreModule from './CoreModule';
 
 
