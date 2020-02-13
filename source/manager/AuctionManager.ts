@@ -4,7 +4,7 @@ type SizeMap ={ [size:string]:any};
 type PlacementMap ={[slotid:number]:SizeMap};
 
 export default class AuctionManager{
-    
+
     public conductAuction(providersResponse:any):PlacementMap{
         
         let placementmap:PlacementMap={};
