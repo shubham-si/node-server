@@ -10,13 +10,11 @@ import Logger from '../manager/LogManager';
 export default class CoreModule{
 
     private static _adapterResolver:AdapterResolver;
-    private static batchedJobQueueMap;
-    private static adapters;
+    private static adapterMap;
 
     constructor(){
         CoreModule._adapterResolver=new AdapterResolver();
-        CoreModule.batchedJobQueueMap={};
-        CoreModule.adapters={};
+        CoreModule.adapterMap={};
     }
 
     public init(){
@@ -34,24 +32,19 @@ export default class CoreModule{
 
     public makeRequests() {
         placementRepo.each(this.makeBidRequestForPlacement);
-        console.log(JSON.stringify(CoreModule.batchedJobQueueMap));
     }
  
     private makeBidRequestForPlacement(placement:Placement,index:number){
 
-        providerRepo.each((providerConfig:ProviderConfig)=>{
-            let adapter = CoreModule._adapterResolver.getAdapterInstance(providerConfig.entrypoint);
-            CoreModule.adapters[providerConfig.entrypoint] = CoreModule.adapters[providerConfig.entrypoint] || {};
-            CoreModule.adapters[providerConfig.entrypoint] = adapter;
-        });
-
-
         placement.providers.each((provider, index)=> {
         
             let providerConfig:ProviderConfig = providerRepo.find(provider.id);
+            let adapter = CoreModule._adapterResolver.getAdapterInstance(providerConfig.entrypoint);
 
-            let adapter = CoreModule.adapters[providerConfig.entrypoint]; 
-            const request = adapter.setRequest(placement,providerConfig);
+            CoreModule.adapterMap[providerConfig.entrypoint] = CoreModule.adapterMap[providerConfig.entrypoint] || {};
+            CoreModule.adapterMap[providerConfig.entrypoint] = adapter;
+            
+            adapter.setRequest(placement,providerConfig);
 
         });
     }
@@ -61,8 +54,8 @@ export default class CoreModule{
         let defer= new Deferred();
         let promises=[];
 
-        Object.keys(CoreModule.adapters).forEach((adapterName)=>{
-            promises.push(CoreModule.adapters[adapterName].fireRequest());
+        Object.keys(CoreModule.adapterMap).forEach((adapterName)=>{
+            promises.push(CoreModule.adapterMap[adapterName].fireRequest());
         });
 
         Promise.all(promises).then((providerBidResponses)=>{
