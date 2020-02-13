@@ -16,7 +16,7 @@ export const providerRepo:ProviderRepo<string,ProviderConfig> =new ProviderRepo<
     
             let placementProvidersConfigMap: PlacementProviderConfigMap = providersMap[key]     // <providerId:string,PlacementProviderConfig>
             
-            let placementProviderConfigRepo:Repository<number,PlacementProviderConfig> = new PlacementProviderConfigRepo<number,PlacementProviderConfig>();
+            let placementProviderConfigRepo:Repository<string,PlacementProviderConfig> = new PlacementProviderConfigRepo<string,PlacementProviderConfig>();
       
             Object.keys(placementProvidersConfigMap).forEach((placementConfigDataKey:string)=>{
                placementProviderConfigRepo.add(placementProvidersConfigMap[placementConfigDataKey]);     //for each adslot its corrosponding providers config info

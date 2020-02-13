@@ -43,7 +43,7 @@ type PlacementConfigMap ={
 }
 
 export interface PlacementsInfoMap extends PlacementConfig {
-    providers: Repository<number,PlacementProviderConfig>;               // adslotid : number <> [{providerid: string <> placementproviderdetails}]
+    providers: Repository<string,PlacementProviderConfig>;               // adslotid : number <> [{providerid: string <> placementproviderdetails}]
 }
 
 export type InputConfig = {

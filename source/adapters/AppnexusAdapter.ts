@@ -1,7 +1,9 @@
-import {PlacementProviderConfig} from '../config/Type';
+import {PlacementProviderConfig, ProviderConfig} from '../config/Type';
 import { Placement } from "../config/models/Placement";
+import { BidRequestAdapter } from '../contracts/servicecontracts/BidRequestAdapter';
+import { Ajax } from '../services/Ajax';
 
-class AppnexusAdapter{
+class AppnexusAdapter implements BidRequestAdapter{
 
     private reqMap;  //:ClientSideDSP;
     private _isAdExchange:boolean;
@@ -19,22 +21,29 @@ class AppnexusAdapter{
         return this._isAdExchange;
     }
 
-    public getRequest(placement:Placement, providerConfig: PlacementProviderConfig):any{
+    public setRequest(placement:Placement, providerConfig: ProviderConfig){
+        
+        const providerID = providerConfig.id;
+        const placementProviderConfig:PlacementProviderConfig = placement.providers.find(providerID);
 
-        let reqdata=this.getRequestPayload(placement, providerConfig);
+        let reqdata=this.getRequestPayload(placement.size, placementProviderConfig);
         this.reqMap.reqPayload[placement.id]=reqdata;
-        return this.reqMap
     }
 
-    private getRequestPayload(placement:Placement, providerConfig: PlacementProviderConfig):any{
+    private getRequestPayload(size:string, providerConfig: PlacementProviderConfig):any{
 
         let reqObject={};
         Object.keys(providerConfig).forEach((key)=>{
             reqObject[key]=providerConfig[key];
         });
 
-        reqObject["size"]=placement.size;
+        reqObject["size"] = size;
         return reqObject;
+    }
+
+    public fireRequest():Promise<any>{
+        let requestCall =new Ajax(this.reqMap.url,this.reqMap.reqPayload,this.reqMap.method).callService();
+        return requestCall;
     }
 
 

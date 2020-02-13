@@ -5,7 +5,7 @@ class LogManager{
 
     public static LEVEL_1:number=1;             // -- AdapterManager (PlacementRepo)
     public static LEVEL_2:number=2;            // -- AuctionManager (Placement Responses)
-    public static LEVEL_INFO:number=0;
+    public static LEVEL_3:number=3;
 
     constructor(){
        
@@ -13,9 +13,11 @@ class LogManager{
 
     public log(data:any,level:number){
         if(level==LogManager.LEVEL_1){
-            this.logData(data,"logProviderResponse");
+            this.logData(data,"providerResponseLog");
         }else if(level==LogManager.LEVEL_2){
-            this.logData(data,"logAuctionParticipant");
+            this.logData(data,"auctionParticipantLog");
+        }else if(level==LogManager.LEVEL_3){
+            this.logData(data,"auctionWinnerLog");
         }
     }
     

@@ -1,72 +1,115 @@
-import {placementRepo,providerRepo} from '../config/ConfigBuilder';
+import {placementRepo,providerRepo, providersConfig} from '../config/ConfigBuilder';
 import AdapterResolver from '../resolver/AdapterResolver';
 import {Placement} from '../config/models/Placement';
 import { Deferred, Ajax } from '../services/Ajax';
-import RequestService from '../services/RequestService';
+import { ProviderConfig } from '../config/Type';
+import AuctionManager from '../manager/AuctionManager';
+import Logger from '../manager/LogManager';
 
 
 export default class CoreModule{
 
     private static _adapterResolver:AdapterResolver;
     private static batchedJobQueueMap;
+    private static adapters;
 
     constructor(){
         CoreModule._adapterResolver=new AdapterResolver();
         CoreModule.batchedJobQueueMap={};
+        CoreModule.adapters={};
     }
 
     public init(){
-        placementRepo.each(this.placementCallback);
+        
+        this.makeRequests();
+        this.fireRequests().then((providerResponses)=>{
+
+            this.logProviderResponses(providerResponses);
+            let auctionResult = new AuctionManager().conductAuction(providerResponses);
+            this.renderAds(auctionResult);
+         },err=>{
+            err.send('OK error');
+         });
     }
 
-    private placementCallback(placement:Placement,index:number){
+    public makeRequests() {
+        placementRepo.each(this.makeBidRequestForPlacement);
+        console.log(JSON.stringify(CoreModule.batchedJobQueueMap));
+    }
+ 
+    private makeBidRequestForPlacement(placement:Placement,index:number){
+
+        providerRepo.each((providerConfig:ProviderConfig)=>{
+            let adapter = CoreModule._adapterResolver.getAdapterInstance(providerConfig.entrypoint);
+            CoreModule.adapters[providerConfig.entrypoint] = CoreModule.adapters[providerConfig.entrypoint] || {};
+            CoreModule.adapters[providerConfig.entrypoint] = adapter;
+        });
+
+
         placement.providers.each((provider, index)=> {
-            
-            let providerInf= providerRepo.find(provider.id);
-            let adapterRequest= CoreModule._adapterResolver.getInstanceAdapter(providerInf,placement,provider);
+        
+            let providerConfig:ProviderConfig = providerRepo.find(provider.id);
 
-            if(providerInf.entrypoint=="AdExchange"){
-                CoreModule.batchedJobQueueMap["AdExchange"] =adapterRequest;
-            }else{
-                CoreModule.batchedJobQueueMap[providerInf.id] =adapterRequest;
-            }
+            let adapter = CoreModule.adapters[providerConfig.entrypoint]; 
+            const request = adapter.setRequest(placement,providerConfig);
 
         });
     }
 
-    public requestService():Promise<any>{
+    private fireRequests(){
 
-        let defferedRequests=[];
-        let adExchangePromise:Promise<any>;
+        let defer= new Deferred();
+        let promises=[];
 
-
-        Object.keys(CoreModule.batchedJobQueueMap).forEach((adapter)=>{
-            if(adapter=="AdExchange"){
-                adExchangePromise= RequestService.initiateRequest(CoreModule.batchedJobQueueMap["AdExchange"]);
-            }else{
-                defferedRequests.push(CoreModule.batchedJobQueueMap[adapter]);    
-            }
+        Object.keys(CoreModule.adapters).forEach((adapterName)=>{
+            promises.push(CoreModule.adapters[adapterName].fireRequest());
         });
 
-        let defer = new Deferred();
-
-        Promise.all([adExchangePromise,...defferedRequests.map((reqParam,i)=>{
-            return new Promise((resolve,reject)=>{
-                try{
-                    new Ajax(reqParam.url,reqParam.reqPayload,reqParam.method).callService()
-                    .then((response)=>{
-                        resolve(response)
-                    })
-                }catch(err){
-                    reject(err);
-                }
-            })
-        })]).then((responses)=>{
-            responses= [].concat.apply([], responses);
-            defer.resolve(responses);                   // {adslot:size:[{bidprice,adcode}]}
+        Promise.all(promises).then((providerBidResponses)=>{
+            providerBidResponses = [].concat.apply([], providerBidResponses);
+            defer.resolve(providerBidResponses);
         });
-
         return defer.promise;
+    } 
 
+
+
+    private renderAds(auctionResult){
+
+        let auctionWinner = [];
+
+        Object.keys(auctionResult).forEach((placementid,placementindex:number)=>{
+        Object.keys(auctionResult[placementid]).forEach((sizeInf,sizeindex)=>{
+            if(auctionResult[placementid][sizeInf].length>0){
+                let iframe = document.getElementById('iframe_'+(placementindex+1));
+                var iWindow = (<HTMLIFrameElement> iframe).contentWindow;
+                let doc= iWindow.document;
+                doc.open();
+                doc.write(auctionResult[placementid][sizeInf][0].adcode);
+                doc.close();
+
+                auctionWinner.push(auctionResult[placementid][sizeInf][0]);
+            }
+            })
+        });
+
+        Logger.log(auctionWinner,3);
+    }
+ 
+    private logProviderResponses(providerResponses){
+        let requestPayload={};
+    
+        providerResponses.forEach((providerResponseAdslotMap)=>{
+    
+        Object.keys(providerResponseAdslotMap).forEach((adSlotConfig)=>{
+    
+            let providerId= providerResponseAdslotMap[adSlotConfig].id;
+            requestPayload[providerResponseAdslotMap[adSlotConfig].id] =requestPayload[providerId] || {};
+            requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig]=requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig] || {};
+            requestPayload[providerResponseAdslotMap[adSlotConfig].id][adSlotConfig]= providerResponseAdslotMap[adSlotConfig];
+    
+            });
+        })
+        Logger.log(requestPayload,1);
     }
 }

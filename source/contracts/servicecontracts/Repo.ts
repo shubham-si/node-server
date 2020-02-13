@@ -73,7 +73,7 @@ export class PlacementRepo<K,V> implements Repository<K,V>{                     
         let config;
 
         if(typeof id ==="number")
-            config= this.placementList.filter((config)=>{return +config.properties.id==+id})[0];
+            config= this.placementList.providers.filter((config)=>{return +config.properties.id==+id})[0];
         else if(typeof id === "string")
             config= this.placementList.filter((config)=>{return config.properties.id==id})[0];
         else
